@@ -7,8 +7,7 @@ TableName = 'cubelog'
 ddb = boto3.resource('dynamodb')
 table = ddb.Table(TableName)
 
-last12 = table.query(KeyConditionExpression=Key('puzzle').eq('3x3x3') &
-                     Key('timestamp').gt('0000-00-00T00:00:00Z'),
+last12 = table.query(KeyConditionExpression=Key('puzzle').eq('3x3x3'),
                      ScanIndexForward=False, Limit=12)['Items']
 for n in [12, 5]:
   total = 0
