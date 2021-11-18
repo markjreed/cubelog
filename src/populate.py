@@ -4,16 +4,17 @@ import boto3, json, os, os.path as op
 LogFile = op.join( os.getenv('HOME'), '.cubelog' )
 TableName = 'cubelog'
 
-def main(puzzle='3x3x3'):
-  with open(LogFile) as fh:
+def main(cubelog=LogFile):
+  with open(cubelog) as fh:
     ddb = boto3.resource('dynamodb')
     table = ddb.Table(TableName)
     for line in fh:
-      fields = line[0:-1].split(maxsplit=2)
-      timestamp = fields[0][0:-1]
-      solve_time = fields[1]
-      if len(fields) > 2:
-        scramble = fields[2]
+      fields = line[0:-1].split(maxsplit=3)
+      timestamp = fields[0]
+      puzzle = fields[1][1:-2]
+      solve_time = fields[2]
+      if len(fields) > 3:
+        scramble = fields[3]
       else:
         scramble = None
       key = { 'puzzle': puzzle, 'timestamp': timestamp }
